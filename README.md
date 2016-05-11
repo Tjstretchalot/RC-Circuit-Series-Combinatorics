@@ -4,7 +4,7 @@ For this project, the task is to design a circuit to within some percentage of a
 
 ## Documentation
 
-The documentation is in the form of javadoc, visible live [here](http://tjstretchalot.github.io/RC-Circuit-Series-Combinatrics)
+The documentation is in the form of javadoc, visible live [here](http://tjstretchalot.github.io/RC-Circuit-Series-Combinatorics)
 
 ## Dependencies
 
