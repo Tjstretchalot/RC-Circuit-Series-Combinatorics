@@ -29,7 +29,6 @@ public class Circuit {
 	 * 
 	 * @param capacitors the capacitors
 	 * @param resistors the resistors
-	 * @param rcCircuitGenerator TODO
 	 */
 	public Circuit(List<Capacitor> capacitors, List<Resistor> resistors) {
 		this.capacitors = capacitors;
