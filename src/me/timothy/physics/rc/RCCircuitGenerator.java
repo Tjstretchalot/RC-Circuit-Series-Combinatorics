@@ -179,12 +179,12 @@ public class RCCircuitGenerator {
 		
 		List<ICombinatoricsVector<Resistor>> resistorCombinations = new ArrayList<>();
 		for(int numResistors = 1; numResistors <= maxNumResistors; numResistors++) {
-			Generator<Resistor> resistorGen = Factory.createSimpleCombinationGenerator(resCombVector, numResistors);
+			Generator<Resistor> resistorGen = Factory.createMultiCombinationGenerator(resCombVector, numResistors);
 			resistorCombinations.addAll(resistorGen.generateAllObjects());
 		}
 		List<ICombinatoricsVector<Capacitor>> capacitorCombinations = new ArrayList<>();
 		for(int numCapacitors = 1; numCapacitors <= maxNumCapacitors; numCapacitors++) {
-			Generator<Capacitor> capacitorGen = Factory.createSimpleCombinationGenerator(capCombVector, numCapacitors);
+			Generator<Capacitor> capacitorGen = Factory.createMultiCombinationGenerator(capCombVector, numCapacitors);
 			capacitorCombinations.addAll(capacitorGen.generateAllObjects());
 		}
 		
