@@ -1,7 +1,6 @@
 package me.timothy.physics.rc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,10 +75,10 @@ import org.paukov.combinatorics.ICombinatoricsVector;
 public class RCCircuitGenerator {
 	
 	//@SuppressWarnings("unused") // In case time constant near is null
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		/*
 		 * These are the parameters that can be modified to generate different circuits
-		 */
+		 *
 		final int numResistors = 3;
 		final int numCapacitors = 2;
 		final int[] allowedResistorOhms = {5, 10, 25, 50, 100};
@@ -108,172 +107,7 @@ public class RCCircuitGenerator {
 		for(int i = 0; i < circuits.size(); i++) {
 			System.out.printf("  Circuit #%d:\n    %s\n", i+1, circuits.get(i).toString());
 		}
-	}
-	
-	/**
-	 * A very simple description of a resistor, which
-	 * has some resistance measured in ohms.
-	 * 
-	 * @author Timothy
-	 */
-	class Resistor {
-		int resistanceOhms;
-		
-		Resistor(int resistanceOhms) {
-			this.resistanceOhms = resistanceOhms;
-		}
-		
-		@Override
-		public String toString() {
-			return resistanceOhms + "ohms";
-		}
-	}
-	
-	/**
-	 * A very simply description of a capacitor, which has
-	 * some capacitance in micro-farads.
-	 * 
-	 * @author Timothy
-	 */
-	class Capacitor {
-		int capacitanceMicroFarads;
-		
-		Capacitor(int capacitanceMicroFarads) {
-			this.capacitanceMicroFarads = capacitanceMicroFarads;
-		}
-		
-		@Override
-		public String toString() {
-			return capacitanceMicroFarads + "uF";
-		}
-	}
-	
-	/**
-	 * Specifically the type of circuit described in the class-level documentation, resistors
-	 * in series in series with capacitors in series. 
-	 * 
-	 * @author Timothy Moore
-	 */
-	class Circuit {
-		// This is not a primitive so it can be calculated
-		// only when needed
-		private Double timeConstant;
-		
-		/**
-		 * The capacitors in the circuit
-		 */
-		List<Capacitor> capacitors;
-		
-		/**
-		 * The resistors in the circuit
-		 */
-		List<Resistor> resistors;
-		
-		/**
-		 * Creates a circuit with the specified capacitors and resistors in series
-		 * 
-		 * @param capacitors the capacitors
-		 * @param resistors the resistors
-		 */
-		Circuit(List<Capacitor> capacitors, List<Resistor> resistors) {
-			this.capacitors = capacitors;
-			this.resistors = resistors;
-		}
-		
-		/**
-		 * The time constant, &tau;, of the circuit measured in seconds.
-		 * @return &tau; (seconds)
-		 */
-		double getTimeConstant() {
-			if(timeConstant == null) {
-				timeConstant = calculateTimeConstant();
-			}
-			
-			return timeConstant.doubleValue();
-		}
-		
-		/**
-		 * The effective resistance of the circuit
-		 * @return R (Ohms)
-		 */
-		int getEffectiveResistanceOhms() {
-			return resistors.stream().collect(Collectors.summingInt(r -> r.resistanceOhms));
-		}
-		
-		/**
-		 * The effective capacitance of the circuit
-		 * @return C (&mu;F)
-		 */
-		double getEffectiveCapacitanceMicroFarads() {
-			return 1. / capacitors.stream().collect(Collectors.summingDouble(c -> 1. / c.capacitanceMicroFarads));
-		}
-		
-		private double calculateTimeConstant() {
-			// Combine resistors: Re = R1 + R2 + ... + Rn
-			int effectiveResistanceOhms = getEffectiveResistanceOhms();
-			
-			// Combine capacitors: 1 / Ce = 1 / C1 + 1 / C2 + ... + 1 / Cn
-			double effectiveCapacitanceMicroFarads = getEffectiveCapacitanceMicroFarads();
-			
-			// tau = RC
-			return effectiveResistanceOhms * effectiveCapacitanceMicroFarads * Math.pow(10, -6);
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result + ((capacitors == null) ? 0 : capacitors.hashCode());
-			result = prime * result + ((resistors == null) ? 0 : resistors.hashCode());
-			result = prime * result + ((timeConstant == null) ? 0 : timeConstant.hashCode());
-			return result;
-		}
-
-		/**
-		 * Not dependent on the order of the capacitors list or resistors list
-		 * 
-		 * @param obj the other object
-		 * @return if it logically equivalent to this object
-		 */
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Circuit other = (Circuit) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
-			if (capacitors == null) {
-				if (other.capacitors != null)
-					return false;
-			} else if (!capacitors.containsAll(other.capacitors) || !other.capacitors.containsAll(capacitors))
-				return false;
-			if (resistors == null) {
-				if (other.resistors != null)
-					return false;
-			} else if (!resistors.containsAll(other.resistors) || !other.resistors.containsAll(resistors))
-				return false;
-			return true;
-		}
-
-		private RCCircuitGenerator getOuterType() {
-			return RCCircuitGenerator.this;
-		}
-
-		@Override
-		public String toString() {
-			return String.format("Time Constant: %s | Resistors: %s | Capacitors: %s | Eff Resistance: %s | Eff Capacitance: %s",
-				String.format("%1$,.8f", getTimeConstant()), resistors.toString(), capacitors.toString(), 
-				String.format("%dohms", getEffectiveResistanceOhms()),
-				String.format("%1$,.5fuF", getEffectiveCapacitanceMicroFarads()));
-		}
-		
-		
-	}
+	}*/
 	
 	private List<Resistor> resistors;
 	private List<Capacitor> capacitors;
@@ -300,6 +134,14 @@ public class RCCircuitGenerator {
 	}
 	
 	/**
+	 * Sets the allowed resistors to the specified resistors
+	 * 
+	 * @param resistors the new resistors
+	 */
+	public void setResistors(List<Resistor> resistors) {
+		this.resistors = resistors;
+	}
+	/**
 	 * Sets the allowed capacitors to be the specified capacitors in ohms
 	 * 
 	 * @param capacitancesMicroFarads the capacitors in micro farads
@@ -309,6 +151,15 @@ public class RCCircuitGenerator {
 		for(int cMicroFarads : capacitancesMicroFarads) {
 			capacitors.add(new Capacitor(cMicroFarads));
 		}
+	}
+	
+	/**
+	 * Sets the allowed capacitors to the specified capacitors
+	 * 
+	 * @param capacitors the new capacitors
+	 */
+	public void setCapacitors(List<Capacitor> capacitors) {
+		this.capacitors = capacitors;
 	}
 	
 	/**
@@ -346,4 +197,16 @@ public class RCCircuitGenerator {
 		return result;
 	}
 	
+	/**
+	 * Returns a subset of the circuits provided where the circuits time constant
+	 * is within <code>tolerance</code> of <code>timeConstant</code>
+	 * 
+	 * @param circuits the circuits to use
+	 * @param timeConstant the time constant
+	 * @param tolerance allowed tolerance (or 0)
+	 * @return the filtered circuits
+	 */
+	public static List<Circuit> filterCircuitsByTimeConstant(List<Circuit> circuits, double timeConstant, double tolerance) {
+		return circuits.stream().filter(c -> Math.abs(c.getTimeConstant() - timeConstant) <= tolerance).collect(Collectors.toList());
+	}
 }
